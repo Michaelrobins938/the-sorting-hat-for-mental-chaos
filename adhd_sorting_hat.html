@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Sorting Hat for Mental Chaos™ - Certified Neurodivergent</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Creepster&family=Montserrat:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(45deg, #1a0033, #330066, #0d1b2a, #2d1b4e, #1a0033);
+            background-size: 400% 400%;
+            animation: gradientShift 12s ease infinite;
+            font-family: 'Montserrat', sans-serif;
+            color: #e0e0e0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="%23ff6b9d" opacity="0.3"/><circle cx="10" cy="10" r="3" fill="%23ff6b9d"/></svg>'), auto;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            25% { background-position: 100% 50%; }
+            50% { background-position: 100% 100%; }
+            75% { background-position: 0% 100%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .floating-pill {
+            position: absolute;
+            background: rgba(255, 100, 150, 0.3);
+            border-radius: 50px;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .floating-pill:nth-child(1) { width: 30px; height: 15px; top: 10%; left: 10%; animation-delay: 0s; }
+        .floating-pill:nth-child(2) { width: 25px; height: 12px; top: 30%; right: 15%; animation-delay: 2s; }
+        .floating-pill:nth-child(3) { width: 35px; height: 18px; bottom: 20%; left: 20%; animation-delay: 4s; }
+        .floating-pill:nth-child(4) { width: 20px; height: 10px; top: 60%; right: 30%; animation-delay: 1s; }
+        .floating-pill:nth-child(5) { width: 28px; height: 14px; top: 80%; left: 60%; animation-delay: 3s; }
+        .floating-pill:nth-child(6) { width: 22px; height: 11px; top: 50%; left: 5%; animation-delay: 5s; }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
+            50% { transform: translateY(-30px) rotate(180deg); opacity: 0.8; }
+        }
+        
+        .konami-code {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: #00ff00;
+            font-family: 'Fira Code', monospace;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #00ff00;
+            display: none;
+            z-index: 9999;
+            text-align: center;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            border: 2px solid #ff6b9d;
+            box-shadow: 0 0 30px rgba(255, 107, 157, 0.3);
+            position: relative;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: linear-gradient(45deg, #ff6b9d, #4ecdc4, #45b7d1, #96ceb4, #ffa726, #ff6b9d);
+            background-size: 400% 400%;
+            border-radius: 25px;
+            z-index: -1;
+            animation: gradientShift 3s ease infinite;
+        }
+        
+        .title {
+            font-family: 'Creepster', cursive;
+            font-size: 3.5em;
+            color: #ff6b9d;
+            text-shadow: 0 0 20px #ff6b9d, 0 0 40px #ff6b9d;
+            margin-bottom: 10px;
+            animation: flicker 3s infinite;
+            position: relative;
+        }
+        
+        .title::after {
+            content: '™';
+            font-size: 0.3em;
+            position: absolute;
+            top: 0;
+            right: -20px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+            60% { opacity: 1; }
+            62% { opacity: 0.9; }
+            98% { opacity: 1; }
+            99% { opacity: 0.7; }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            color: #b8b8ff;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        
+        .intro-text {
+            font-size: 1em;
+            line-height: 1.6;
+            color: #d0d0d0;
+            max-width: 600px;
+            margin: 0 auto 20px;
+        }
+        
+        .disclaimer {
+            font-size: 0.8em;
+            color: #999;
+            font-style: italic;
+            margin-top: 15px;
+            opacity: 0.7;
+        }
+        
+        .quiz-container {
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid #4a4a4a;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .quiz-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .question {
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .question-text {
+            font-size: 1.3em;
+            color: #ff9f43;
+            margin-bottom: 20px;
+            font-weight: 600;
+            position: relative;
+        }
+        
+        .question-number {
+            position: absolute;
+            top: -10px;
+            right: 0;
+            background: #ff6b9d;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.7em;
+            font-weight: bold;
+        }
+        
+        .options {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .option {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            border: 2px solid #555;
+            border-radius: 10px;
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1em;
+            color: #ecf0f1;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .option:hover::before {
+            left: 100%;
+        }
+        
+        .option:hover {
+            background: linear-gradient(135deg, #3d5a80, #98c1d9);
+            border-color: #ff6b9d;
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.3);
+        }
+        
+        .option.selected {
+            background: linear-gradient(135deg, #ff6b9d, #c44569);
+            border-color: #ff6b9d;
+            color: white;
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(255, 107, 157, 0.5);
+        }
+        
+        .option.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        
+        .result-container {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            border: 3px solid;
+            box-shadow: 0 0 40px;
+            display: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .result-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, currentColor, transparent);
+            animation: rotate 4s linear infinite;
+            opacity: 0.1;
+        }
+        
+        @keyframes rotate {
+            to { transform: rotate(360deg); }
+        }
+        
+        .house-slackerin {
+            border-color: #27ae60;
+            box-shadow: 0 0 40px rgba(39, 174, 96, 0.4);
+            color: #27ae60;
+        }
+        
+        .house-overthinkledore {
+            border-color: #3498db;
+            box-shadow: 0 0 40px rgba(52, 152, 219, 0.4);
+            color: #3498db;
+        }
+        
+        .house-cryffindor {
+            border-color: #e74c3c;
+            box-shadow: 0 0 40px rgba(231, 76, 60, 0.4);
+            color: #e74c3c;
+        }
+        
+        .house-naptuffpuff {
+            border-color: #f39c12;
+            box-shadow: 0 0 40px rgba(243, 156, 18, 0.4);
+            color: #f39c12;
+        }
+        
+        .house-name {
+            font-family: 'Creepster', cursive;
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px currentColor;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 15px currentColor; }
+            to { text-shadow: 0 0 25px currentColor, 0 0 35px currentColor; }
+        }
+        
+        .house-description {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: #e0e0e0;
+        }
+        
+        .house-motto {
+            font-style: italic;
+            font-size: 1.1em;
+            opacity: 0.9;
+            margin-bottom: 20px;
+            color: #d0d0d0;
+        }
+        
+        .house-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+        
+        .stat-value {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: currentColor;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            padding: 15px 30px;
+            transition: all 0.3s ease;
+            margin: 10px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b9d, #4ecdc4, #45b7d1);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+            width: 0%;
+            position: relative;
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: progressShimmer 1.5s infinite;
+        }
+        
+        @keyframes progressShimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .chaos-meter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #ff6b9d;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+        }
+        
+        .chaos-level {
+            color: #ff6b9d;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .chaos-bar {
+            width: 100px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .chaos-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4ecdc4, #ffa726, #ff6b9d);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+        
+        .secret-counter {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8em;
+            color: #00ff00;
+            display: none;
+        }
+        
+        .easter-egg-notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: #ffd700;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #ffd700;
+            text-align: center;
+            z-index: 9999;
+            display: none;
+            animation: bounceIn 0.5s ease;
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: translate(-50%, -50%) scale(0.3); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.05); }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+        
+        .hat-animation {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            background: #4a4a4a;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: relative;
+            animation: wobble 2s infinite;
+            cursor: pointer;
+        }
+        
+        .hat-animation.talking {
+            animation: hatTalk 0.5s ease infinite;
+        }
+        
+        @keyframes wobble {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+        
+        @keyframes hatTalk {
+            0%, 100% { transform: rotate(-3deg) scaleY(1); }
+            50% { transform: rotate(3deg) scaleY(1.1); }
+        }
+        
+        .hat-animation::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 30%;
+            width: 40%;
+            height: 40px;
+            background: #4a4a4a;
+            border-radius: 50px;
+        }
+        
+        .hat-animation::after {
+            content: '👁️';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5em;
+            animation: blink 3s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 90%, 100% { opacity: 1; }
+            95% { opacity: 0; }
+        }
+        
+        .hat-speech {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: #ffd700;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 0.9em;
+            white-space: nowrap;
+            border: 2px solid #ffd700;
+            display: none;
+        }
+        
+        .hat-speech::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 10px solid transparent;
+            border-top-color: #ffd700;
+        }
+        
+        .sparkles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ffd700;
+            border-radius: 50%;
+            animation: sparkle 2s infinite;
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1) rotate(180deg); }
+        }
+        
+        .hidden { display: none !important; }
+        
+        @media (max-width: 768px) {
+            .title { font-size: 2.5em; }
+            .container { padding: 15px; }
+            .chaos-meter { 
+                position: relative; 
+                top: auto; 
+                right: auto; 
+                margin-bottom: 20px; 
+                width: 100%;
+            }
+            .house-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .debug-mode {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            color: #00ff00;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8em;
+            display: none;
+            z-index: 1000;
+        }
+        
+        .achievement-toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+            display: none;
+            animation: slideDown 0.5s ease;
+        }
+        
+        @keyframes slideDown {
+            from { transform: translateX(-50%) translateY(-100%); }
+            to { transform: translateX(-50%) translateY(0); }
+        }
+        
+        .matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .matrix-rain.active {
+            opacity: 0.1;
+        }
+        
+        .matrix-column {
+            position: absolute;
+            top: -100%;
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            color: #00ff00;
+            animation: matrixFall 3s linear infinite;
+        }
+        
+        @keyframes matrixFall {
+            to { top: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-pill"></div>
+        <div class="floating-pill"></div>
+        <div class="floating-pill"></div>
+        <div class="floating-pill"></div>
+        <div class="floating-pill"></div>
+        <div class="floating-pill"></div>
+    </div>
+    
+    <div class="matrix-rain" id="matrixRain"></div>
+    
+    <div class="chaos-meter">
+        <div class="chaos-level">CHAOS LEVEL: <span id="chaosLevel">0%</span></div>
+        <div class="chaos-bar">
+            <div class="chaos-fill" id="chaosFill"></div>
+        </div>
+    </div>
+    
+    <div class="secret-counter" id="secretCounter">
+        Secrets Found: <span id="secretCount">0</span>/10
+    </div>
+    
+    <div class="debug-mode" id="debugMode">
+        <div>Clicks: <span id="clickCount">0</span></div>
+        <div>Time: <span id="timeSpent">0</span>s</div>
+        <div>Konami: <span id="konamiProgress">0</span>/10</div>
+    </div>
+    
+    <div class="konami-code" id="konamiCode">
+        <h2>🎮 KONAMI CODE ACTIVATED! 🎮</h2>
+        <p>You've unlocked the secret developer mode!</p>
+        <p>Achievement: "Up Up Down Down Left Right Left Right B A"</p>
+        <button onclick="closeKonami()" style="margin-top: 15px; padding: 10px 20px; background: #00ff00; color: black; border: none; border-radius: 5px; cursor: pointer;">Close</button>
+    </div>
+    
+    <div class="easter-egg-notification" id="easterEggNotification">
+        <h3>🥚 EASTER EGG FOUND! 🥚</h3>
+        <p id="easterEggText"></p>
+        <button onclick="closeEasterEgg()" style="margin-top: 10px; padding: 8px 16px; background: #ffd700; color: black; border: none; border-radius: 5px; cursor: pointer;">Neat!</button>
+    </div>
+    
+    <div class="achievement-toast" id="achievementToast">
+        <span id="achievementText"></span>
+    </div>
+    
+    <div class="container">
+        <div class="header">
+            <h1 class="title" id="mainTitle">The Sorting Hat for Mental Chaos</h1>
+            <p class="subtitle">"Because regular Hogwarts houses are for neurotypicals"</p>
+            <p class="intro-text">
+                Welcome to the most scientifically inaccurate personality quiz on the internet! 
+                Our patented Sorting Hat has been drinking and doing questionable research into neurodivergent psychology. 
+                Results may include: existential dread, accurate self-awareness, or the sudden urge to reorganize your entire life at 3 AM.
+            </p>
+            <p class="disclaimer">
+                *Not affiliated with actual Hogwarts. May cause uncontrollable laughter, self-recognition, or the desire to start 17 new projects. 
+                Side effects include: hyperfocus on irrelevant details, sudden clarity about your life choices, and an inexplicable urge to share results with strangers.
+            </p>
+        </div>
+        
+        <div id="quizContainer" class="quiz-container">
+            <div class="hat-animation" id="sortingHat">
+                <div class="hat-speech" id="hatSpeech"></div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            
+            <div id="questionContainer">
+                <!-- Questions will be inserted here -->
+            </div>
+            
+            <button id="nextBtn" class="btn hidden">Next Question</button>
+            <button id="startBtn" class="btn">Begin the Beautiful Chaos</button>
+        </div>
+        
+        <div id="resultContainer" class="result-container">
+            <!-- Results will be inserted here -->
+        </div>
+    </div>
+    
+    <div class="sparkles" id="sparkles"></div>
+    
+    <script>
+        // Easter Eggs and Secrets
+        let secrets = {
+            found: 0,
+            total: 10,
+            unlocked: new Set()
+        };
+        
+        let stats = {
+            clicks: 0,
+            timeSpent: 0,
+            startTime: Date.now(),
+            konamiProgress: 0,
+            konamiCode: [38, 38, 40, 40, 37, 39, 37, 39, 66, 65], // Up Up Down Down Left Right Left Right B A
+            konamiIndex: 0
+        };
+        
+        const questions = [
+            {
+                question: "It's 2 AM and you suddenly remember you have a project due tomorrow. Your response:",
+                options: [
+                    "Panic, then start 47 different research tabs and somehow end up watching TikToks about medieval torture devices",
+                    "Lie in bed catastrophizing about how this will ruin your entire future while your brain replays every embarrassing moment from 2003",
+                    "Cry, make coffee, cry again, then produce the most brilliant work of your life fueled by pure anxiety and spite",
+                    "Add it to your mental to-do list and take a 'quick' 6-hour nap to 'prepare your mind'"
+                ],
+                weights: [
+                    { slackerin: 3, overthinkledore: 1, cryffindor: 1, naptuffpuff: 0 },
+                    { slackerin: 0, overthinkledore: 3, cryffindor: 1, naptuffpuff: 1 },
+                    { slackerin: 1, overthinkledore: 1, cryffindor: 3, naptuffpuff: 0 },
+                    { slackerin: 1, overthinkledore: 0, cryffindor: 0, naptuffpuff: 3 }
+                ]
+            },
+            {
+                question: "Your ideal productivity system involves:",
+                options: [
+                    "47 different apps, color-coded calendars, and a bullet journal you abandoned after 3 days but keep buying supplies for",
+                    "Extensive research into productivity methods while never actually implementing any of them",
+                    "Screaming into the void until motivation materializes, then working for 14 hours straight",
+                    "A very detailed plan that you'll definitely start tomorrow... or next Monday... or January 1st"
+                ],
+                weights: [
+                    { slackerin: 3, overthinkledore: 1, cryffindor: 0, naptuffpuff: 1 },
+                    { slackerin: 1, overthinkledore: 3, cryffindor: 0, naptuffpuff: 1 },
+                    { slackerin: 0, overthinkledore: 0, cryffindor: 3, naptuffpuff: 0 },
+                    { slackerin: 1, overthinkledore: 1, cryffindor: 0, naptuffpuff: 3 }
+                ]
+            },
+            {
+                question: "When someone says 'just focus,' you:",
+                options: [
+                    "Explain that's like telling someone to 'just fly' while secretly starting 3 new projects",
+                    "Spiral into an existential crisis about the nature of attention and write a 47-page analysis",
+                    "Laugh maniacally while your eye twitches and you aggressively organize your desk",
+                    "Nod and then immediately forget what you were supposed to focus on"
+                ],
+                weights: [
+                    { slackerin: 3, overthinkledore: 0, cryffindor: 1, naptuffpuff: 1 },
+                    { slackerin: 1, overthinkledore: 3, cryffindor: 0, naptuffpuff: 0 },
+                    { slackerin: 0, overthinkledore: 1, cryffindor: 3, naptuffpuff: 0 },
+                    { slackerin: 1, overthinkledore: 0, cryffindor: 0, naptuffpuff: 3 }
+                ]
+            },
+            {
+                question: "Your relationship with deadlines is best described as:",
+                options: [
+                    "A chaotic dance where I start 12 things and finish them in the last 30 minutes using pure adrenaline",
+                    "A philosophical nightmare where I contemplate whether time is even real while missing every single one",
+                    "An emotional rollercoaster that ends with me producing Oscar-worthy work while having a breakdown",
+                    "What deadlines? I'll deal with that after this nap... and maybe some snacks"
+                ],
+                weights: [
+                    { slackerin: 3, overthinkledore: 0, cryffindor: 1, naptuffpuff: 0 },
+                    { slackerin: 1, overthinkledore: 3, cryffindor: 0, naptuffpuff: 1 },
+                    { slackerin: 0, overthinkledore: 1, cryffindor: 3, naptuffpuff: 0 },
+                    { slackerin: 0, overthinkledore: 0, cryffindor: 0, naptuffpuff: 3 }
+                ]
+            },
+            {
+                question: "Your brain at 3 AM typically:",
+                options: [
+                    "Decides NOW is the perfect time to reorganize your entire life, learn mandarin, and start that novel",
+                    "Replays every conversation you've ever had and analyzes whether that person from 2015 secretly hates you",
+                    "Oscillates between 'I'M A GENIUS' and 'I'M A DISASTER' every 12 seconds",
+                    "Finally achieves perfect clarity about your life goals right before you fall asleep and forget everything"
+                ],
+                weights: [
+                    { slackerin: 3, overthinkledore: 1, cryffindor: 0, naptuffpuff: 0 },
+                    { slackerin: 0, overthinkledore: 3, cryffindor: 1, naptuffpuff: 0 },
+                    { slackerin: 1, overthinkledore: 1, cryffindor: 3, naptuffpuff: 0 },
+                    { slackerin: 1, overthinkledore: 1, cryffindor: 0, naptuffpuff: 3 }
+                ]
+            },
+            {
+                question: "When hyperfocusing, you:",
+                options: [
+                    "Become the world's leading expert on medieval cat paintings while your laundry becomes sentient",
+                    "Research the perfect way to do something for 6 hours instead of just doing the thing",
+                    "Channel the energy of a thousand suns into the most random task while everything else burns",
+                    "What's hyperfocusing? I was too busy thinking about what snack to have next"
+                ],
+                weights: [
+                    { slackerin: 3, overthinkledore: 1, cryffindor: 0, naptuffpuff: 0 },
+                    { slackerin: 1, overthinkledore: 3, cryffindor: 0, naptuffpuff: 0 },
+                    { slackerin: 1, overthinkledore: 0, cryffindor: 3, naptuffpuff: 0 },
+                    { slackerin: 0, overthinkledore: 0, cryffindor: 0, naptuffpuff: 3 }
+                ]
+            },
+            {
+                question: "Your approach to multitasking:",
+                options: [
+                    "I have 17 projects open, 3 podcasts playing, and I'm somehow also texting while making art",
+                    "I research the optimal multitasking strategies while procrastinating on the actual tasks",
+                    "I aggressively switch between tasks every 30 seconds while having an emotional breakdown about efficiency",
+                    "I think about doing multiple things while doing absolutely nothing"
+                ],
+                weights: [
+                    { slackerin: 3, overthinkledore: 0, cryffindor: 1, naptuffpuff: 0 },
+                    { slackerin: 1, overthinkledore: 3, cryffindor: 0, naptuffpuff: 1 },
+                    { slackerin: 1, overthinkledore: 1, cryffindor: 3, naptuffpuff: 0 },
+                    { slackerin: 0, overthinkledore: 1, cryffindor: 0, naptuffpuff: 3 }
+                ]
+            },
+            {
+                question: "When you find a new interest, you:",
+                options: [
+                    "Buy all the supplies, join 12 forums, and abandon it for the next shiny thing within a week",
+                    "Research it obsessively for months but never actually start because you need to find the 'perfect' way to begin",
+                    "Dive in headfirst with manic energy, become temporarily obsessed, then burn out spectacularly",
+                    "Add it to your ever-growing list of 'things I'll definitely do someday' and take a nap"
+                ],
+                weights: [
+                    { slackerin: 3, overthinkledore: 0, cryffindor: 1, naptuffpuff: 0 },
+                    { slackerin: 1, overthinkledore: 3, cryffindor: 0, naptuffpuff: 1 },
+                    { slackerin: 1, overthinkledore: 0, cryffindor: 3, naptuffpuff: 0 },
+                    { slackerin: 0, overthinkledore: 1, cryffindor: 0, naptuffpuff: 3 }
+                ]
+            }
+        ];
+        
+        const houses = {
+            slackerin: {
+                name: "SLACKERIN",
+                color: "#27ae60",
+                description: "Congratulations! You're the person who starts 47 different projects and finishes exactly 0.3 of them. Your browser has 127 tabs open, your Notes app is a beautiful disaster of half-formed genius, and you've convinced yourself that buying organizational supplies counts as being organized. You're not lazy—you're just operating on a different dimensional plane where time is a social construct and motivation is a cryptid. Your superpower is turning simple tasks into elaborate adventures.",
+                motto: "Why finish one thing perfectly when you can start seventeen things magnificently?",
+                traits: {
+                    "Creative Chaos": "95%",
+                    "Project Hoarding": "99%",
+                    "Completion Rate": "12%",
+                    "Enthusiasm": "∞%"
+                },
+                famous: "Famous Slackerins: Every artist who has 847 unfinished masterpieces"
+            },
+            overthinkledore: {
+                name: "OVERTHINKLEDORE",
+                color: "#3498db",
+                description: "Welcome to the house of beautiful mental spirals! You've turned overthinking into an art form that would make Inception look like a children's book. While others make decisions, you're busy constructing elaborate mental scenarios about every possible outcome, including the one where your coffee order somehow leads to the downfall of civilization. You have PhD-level expertise in analyzing text messages and can find 47 different meanings in 'ok.' Your brain is basically a supercomputer running on anxiety and perfectionism.",
+                motto: "Why make a decision when you can spend 6 hours researching the optimal way to make decisions?",
+                traits: {
+                    "Analysis Paralysis": "99%",
+                    "Scenario Planning": "∞%",
+                    "Decision Speed": "0.1%",
+                    "Accuracy Rate": "94%"
+                },
+                famous: "Famous Overthinkledores: Anyone who has ever spent 3 hours crafting the perfect text response"
+            },
+            cryffindor: {
+                name: "CRYFFINDOR",
+                color: "#e74c3c",
+                description: "You're brave enough to schedule 17 tasks in one day and emotional enough to have a breakdown about it! Your life is a beautiful chaos of ambitious planning followed by spectacular meltdowns, but somehow you always pull through with work that's either pure genius or pure chaos—there's no in-between. You cry, you conquer, you question your life choices, repeat. Your emotional range spans from 'I AM UNSTOPPABLE' to 'I AM A DISASTER' with no middle ground. You're basically a feelings volcano with a productivity complex.",
+                motto: "Boldly sobbing through life, one impossible deadline at a time!",
+                traits: {
+                    "Emotional Range": "∞%",
+                    "Ambitious Planning": "98%",
+                    "Breakdown Frequency": "Daily",
+                    "Comeback Power": "Legendary"
+                },
+                famous: "Famous Cryffindors: Every overachiever who has ever had a public meltdown and then aced the test"
+            },
+            naptuffpuff: {
+                name: "NAPTUFFPUFF",
+                color: "#f39c12",
+                description: "You've mastered the ancient art of Strategic Procrastination and elevated it to a spiritual practice. Why do today what you can do tomorrow? Why do tomorrow what you can do next week? Your motto is 'I'll be productive after this nap,' and that nap happened 6 months ago. You're not avoiding responsibility—you're just charging your social battery... indefinitely. Your ideal day involves pajamas, snacks, and exactly zero human interaction. You've achieved enlightenment through the power of 'later.'",
+                motto: "I'm not procrastinating, I'm incubating my potential!",
+                traits: {
+                    "Procrastination Mastery": "99%",
+                    "Nap Optimization": "100%",
+                    "Energy Conservation": "Expert",
+                    "Task Completion": "Eventually™"
+                },
+                famous: "Famous Naptuffpuffs: Anyone who has ever said 'I work better under pressure' and meant it"
+            }
+        };
+        
+        let currentQuestion = 0;
+        let scores = { slackerin: 0, overthinkledore: 0, cryffindor: 0, naptuffpuff: 0 };
+        let selectedAnswer = null;
+        
+        // Easter Egg Functions
+        function updateSecretCounter() {
+            document.getElementById('secretCount').textContent = secrets.found;
+            if (secrets.found > 0) {
+                document.getElementById('secretCounter').style.display = 'block';
+            }
+            if (secrets.found >= 5) {
+                document.getElementById('debugMode').style.display = 'block';
+            }
+        }
+        
+        function showEasterEgg(message) {
+            document.getElementById('easterEggText').textContent = message;
+            document.getElementById('easterEggNotification').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('easterEggNotification').style.display = 'none';
+            }, 3000);
+        }
+        
+        function showAchievement(text) {
+            document.getElementById('achievementText').textContent = text;
+            document.getElementById('achievementToast').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('achievementToast').style.display = 'none';
+            }, 4000);
+        }
+        
+        function activateMatrixMode() {
+            const matrix = document.getElementById('matrixRain');
+            matrix.classList.add('active');
+            
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const column = document.createElement('div');
+                    column.className = 'matrix-column';
+                    column.style.left = Math.random() * 100 + '%';
+                    column.style.animationDelay = Math.random() * 2 + 's';
+                    column.textContent = Math.random().toString(36).substring(2, 15);
+                    matrix.appendChild(column);
+                    
+                    setTimeout(() => column.remove(), 3000);
+                }, i * 100);
+            }
+            
+            setTimeout(() => {
+                matrix.classList.remove('active');
+            }, 5000);
+        }
+        
+        // Hat Speech System
+        const hatPhrases = [
+            "Hmmm... interesting choice...",
+            "I see... very revealing...",
+            "Ah yes, the chaos is strong with this one...",
+            "Your neurodivergence is showing...",
+            "Fascinating... utterly fascinating...",
+            "I've seen this pattern before...",
+            "The executive dysfunction is palpable...",
+            "Ah, a kindred spirit...",
+            "Your dopamine levels are... concerning...",
+            "I sense great chaos in you..."
+        ];
+        
+        function hatSpeak() {
+            const hat = document.getElementById('sortingHat');
+            const speech = document.getElementById('hatSpeech');
+            const phrase = hatPhrases[Math.floor(Math.random() * hatPhrases.length)];
+            
+            hat.classList.add('talking');
+            speech.textContent = phrase;
+            speech.style.display = 'block';
+            
+            setTimeout(() => {
+                speech.style.display = 'none';
+                hat.classList.remove('talking');
+            }, 2000);
+        }
+        
+        // Konami Code Handler
+        document.addEventListener('keydown', (e) => {
+            if (e.keyCode === stats.konamiCode[stats.konamiIndex]) {
+                stats.konamiIndex++;
+                stats.konamiProgress = stats.konamiIndex;
+                updateDebugInfo();
+                
+                if (stats.konamiIndex === stats.konamiCode.length) {
+                    document.getElementById('konamiCode').style.display = 'block';
+                    if (!secrets.unlocked.has('konami')) {
+                        secrets.found++;
+                        secrets.unlocked.add('konami');
+                        updateSecretCounter();
+                        activateMatrixMode();
+                    }
+                    stats.konamiIndex = 0;
+                }
+            } else {
+                stats.konamiIndex = 0;
+                stats.konamiProgress = 0;
+                updateDebugInfo();
+            }
+        });
+        
+        function closeKonami() {
+            document.getElementById('konamiCode').style.display = 'none';
+        }
+        
+        function closeEasterEgg() {
+            document.getElementById('easterEggNotification').style.display = 'none';
+        }
+        
+        // Click tracking and easter eggs
+        document.addEventListener('click', (e) => {
+            stats.clicks++;
+            updateDebugInfo();
+            
+            // Hat click easter egg
+            if (e.target.closest('.hat-animation')) {
+                if (!secrets.unlocked.has('hat_click')) {
+                    secrets.found++;
+                    secrets.unlocked.add('hat_click');
+                    updateSecretCounter();
+                    showEasterEgg("The hat appreciates your attention! It's been feeling ignored lately.");
+                }
+                hatSpeak();
+            }
+            
+            // Title click easter egg
+            if (e.target.closest('#mainTitle')) {
+                if (!secrets.unlocked.has('title_click')) {
+                    secrets.found++;
+                    secrets.unlocked.add('title_click');
+                    updateSecretCounter();
+                    showEasterEgg("You found the secret title click! The chaos appreciates your curiosity.");
+                    e.target.style.animation = 'flicker 0.5s ease';
+                }
+            }
+            
+            // Rapid clicking achievement
+            if (stats.clicks === 50 && !secrets.unlocked.has('rapid_clicker')) {
+                secrets.found++;
+                secrets.unlocked.add('rapid_clicker');
+                updateSecretCounter();
+                showAchievement("🖱️ Rapid Clicker Achievement Unlocked!");
+            }
+            
+            // Chaos meter click
+            if (e.target.closest('.chaos-meter')) {
+                if (!secrets.unlocked.has('chaos_click')) {
+                    secrets.found++;
+                    secrets.unlocked.add('chaos_click');
+                    updateSecretCounter();
+                    showEasterEgg("You've tapped into the chaos meter! Your ADHD energy is off the charts!");
+                }
+            }
+        });
+        
+        function updateDebugInfo() {
+            document.getElementById('clickCount').textContent = stats.clicks;
+            document.getElementById('timeSpent').textContent = Math.floor((Date.now() - stats.startTime) / 1000);
+            document.getElementById('konamiProgress').textContent = stats.konamiProgress;
+        }
+        
+        function updateChaosLevel() {
+            const total = Object.values(scores).reduce((a, b) => a + b, 0);
+            const chaos = Math.min(100, (total / (questions.length * 3)) * 100);
+            document.getElementById('chaosLevel').textContent = Math.round(chaos) + '%';
+            document.getElementById('chaosFill').style.width = chaos + '%';
+            
+            // Chaos level achievements
+            if (chaos >= 75 && !secrets.unlocked.has('high_chaos')) {
+                secrets.found++;
+                secrets.unlocked.add('high_chaos');
+                updateSecretCounter();
+                showAchievement("⚡ High Chaos Achievement Unlocked!");
+            }
+        }
+        
+        function createSparkles() {
+            const sparklesContainer = document.getElementById('sparkles');
+            sparklesContainer.innerHTML = '';
+            
+            for (let i = 0; i < 30; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.animationDelay = Math.random() * 2 + 's';
+                sparkle.style.animationDuration = (1 + Math.random() * 2) + 's';
+                sparklesContainer.appendChild(sparkle);
+            }
+        }
+        
+        function displayQuestion() {
+            if (currentQuestion >= questions.length) {
+                showResult();
+                return;
+            }
+            
+            const question = questions[currentQuestion];
+            const container = document.getElementById('questionContainer');
+            
+            container.innerHTML = `
+                <div class="question">
+                    <div class="question-number">Question ${currentQuestion + 1}/${questions.length}</div>
+                    <h3 class="question-text">${question.question}</h3>
+                    <div class="options">
+                        ${question.options.map((option, index) => `
+                            <div class="option" data-index="${index}">
+                                ${option}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            // Add click handlers
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', () => {
+                    document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+                    option.classList.add('selected');
+                    selectedAnswer = parseInt(option.dataset.index);
+                    document.getElementById('nextBtn').classList.remove('hidden');
+                    
+                    // Random hat commentary
+                    if (Math.random() < 0.3) {
+                        setTimeout(hatSpeak, 500);
+                    }
+                });
+            });
+            
+            // Update progress
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            
+            updateChaosLevel();
+            
+            // Progress achievement
+            if (currentQuestion === Math.floor(questions.length / 2) && !secrets.unlocked.has('halfway')) {
+                secrets.found++;
+                secrets.unlocked.add('halfway');
+                updateSecretCounter();
+                showAchievement("🏁 Halfway Point Achievement Unlocked!");
+            }
+        }
+        
+        function nextQuestion() {
+            if (selectedAnswer === null) return;
+            
+            // Update scores
+            const weights = questions[currentQuestion].weights[selectedAnswer];
+            Object.keys(weights).forEach(house => {
+                scores[house] += weights[house];
+            });
+            
+            selectedAnswer = null;
+            currentQuestion++;
+            document.getElementById('nextBtn').classList.add('hidden');
+            
+            setTimeout(displayQuestion, 300);
+        }
+        
+        function showResult() {
+            document.getElementById('quizContainer').style.display = 'none';
+            
+            // Find winning house
+            const winningHouse = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+            const house = houses[winningHouse];
+            
+            const resultContainer = document.getElementById('resultContainer');
+            resultContainer.className = `result-container house-${winningHouse}`;
+            
+            const statsHtml = Object.entries(house.traits).map(([key, value]) => `
+                <div class="stat-item">
+                    <div class="stat-label">${key}</div>
+                    <div class="stat-value">${value}</div>
+                </div>
+            `).join('');
+            
+            resultContainer.innerHTML = `
+                <div class="hat-animation"></div>
+                <h2 class="house-name">${house.name}</h2>
+                <p class="house-description">${house.description}</p>
+                <p class="house-motto">"${house.motto}"</p>
+                
+                <div class="house-stats">
+                    ${statsHtml}
+                </div>
+                
+                <p style="font-style: italic; opacity: 0.8; margin: 20px 0;">${house.famous}</p>
+                
+                <button class="btn" onclick="restartQuiz()">Take Quiz Again (Because Why Not?)</button>
+                <button class="btn" onclick="shareResult()">Share Your Beautiful Chaos</button>
+                <button class="btn" onclick="showSecrets()">View Easter Eggs (${secrets.found}/${secrets.total})</button>
+            `;
+            
+            resultContainer.style.display = 'block';
+            
+            // Completion achievement
+            if (!secrets.unlocked.has('completed')) {
+                secrets.found++;
+                secrets.unlocked.add('completed');
+                updateSecretCounter();
+                showAchievement("🎉 Quiz Completion Achievement Unlocked!");
+            }
+            
+            // House-specific achievements
+            if (!secrets.unlocked.has(`house_${winningHouse}`)) {
+                secrets.found++;
+                secrets.unlocked.add(`house_${winningHouse}`);
+                updateSecretCounter();
+                showAchievement(`🏠 ${house.name} Achievement Unlocked!`);
+            }
+            
+            // Add celebration effects
+            setTimeout(() => {
+                for (let i = 0; i < 100; i++) {
+                    createCelebrationParticle(house.color);
+                }
+            }, 500);
+            
+            createSparkles();
+        }
+        
+        function createCelebrationParticle(color) {
+            const particle = document.createElement('div');
+            particle.style.position = 'fixed';
+            particle.style.width = (4 + Math.random() * 8) + 'px';
+            particle.style.height = (4 + Math.random() * 8) + 'px';
+            particle.style.background = color;
+            particle.style.borderRadius = '50%';
+            particle.style.left = Math.random() * window.innerWidth + 'px';
+            particle.style.top = '-10px';
+            particle.style.pointerEvents = 'none';
+            particle.style.zIndex = '1000';
+            particle.style.boxShadow = `0 0 10px ${color}`;
+            
+            document.body.appendChild(particle);
+            
+            const animation = particle.animate([
+                { 
+                    transform: 'translateY(0px) rotate(0deg)', 
+                    opacity: 1,
+                    scale: 1
+                },
+                { 
+                    transform: `translateY(${window.innerHeight + 100}px) rotate(${720 + Math.random() * 720}deg)`, 
+                    opacity: 0,
+                    scale: 0.5
+                }
+            ], {
+                duration: 2000 + Math.random() * 3000,
+                easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+            });
+            
+            animation.onfinish = () => particle.remove();
+        }
+        
+        function startQuiz() {
+            document.getElementById('startBtn').style.display = 'none';
+            currentQuestion = 0;
+            scores = { slackerin: 0, overthinkledore: 0, cryffindor: 0, naptuffpuff: 0 };
+            displayQuestion();
+            stats.startTime = Date.now();
+        }
+        
+        function restartQuiz() {
+            document.getElementById('resultContainer').style.display = 'none';
+            document.getElementById('quizContainer').style.display = 'block';
+            document.getElementById('startBtn').style.display = 'inline-block';
+            currentQuestion = 0;
+            scores = { slackerin: 0, overthinkledore: 0, cryffindor: 0, naptuffpuff: 0 };
+            selectedAnswer = null;
+            document.getElementById('progressFill').style.width = '0%';
+            updateChaosLevel();
+            createSparkles();
+        }
+        
+        function shareResult() {
+            const winningHouse = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+            const text = `I just got sorted into ${houses[winningHouse].name} at the Sorting Hat for Mental Chaos! 🧙‍♀️ "${houses[winningHouse].motto}" - Try it yourself!`;
+            
+            if (navigator.share) {
+                navigator.share({ 
+                    title: 'Sorting Hat for Mental Chaos™',
+                    text: text,
+                    url: window.location.href
+                });
+            } else {
+                navigator.clipboard.writeText(text).then(() => {
+                    showAchievement('📋 Result copied to clipboard! Share your beautiful chaos with the world!');
+                });
+            }
+        }
+        
+        function showSecrets() {
+            const secretsList = Array.from(secrets.unlocked).join(', ') || 'None yet!';
+            alert(`Easter Eggs Found: ${secrets.found}/${secrets.total}\n\nUnlocked: ${secretsList}\n\nKeep exploring to find more hidden secrets!`);
+        }
+        
+        // Event listeners
+        document.getElementById('startBtn').addEventListener('click', startQuiz);
+        document.getElementById('nextBtn').addEventListener('click', nextQuestion);
+        
+        // Time-based easter eggs
+        setInterval(() => {
+            const timeSpent = Math.floor((Date.now() - stats.startTime) / 1000);
+            
+            if (timeSpent === 300 && !secrets.unlocked.has('time_waster')) { // 5 minutes
+                secrets.found++;
+                secrets.unlocked.add('time_waster');
+                updateSecretCounter();
+                showAchievement("⏰ Time Waster Achievement Unlocked! (5 minutes spent)");
+            }
+            
+            updateDebugInfo();
+        }, 1000);
+        
+        // Initialize
+        createSparkles();
+        updateChaosLevel();
+        updateSecretCounter();
+        
+        // Add random chaos effects
+        setInterval(() => {
+            if (Math.random() < 0.1) {
+                const pill = document.createElement('div');
+                pill.className = 'floating-pill';
+                pill.style.left = Math.random() * 100 + '%';
+                pill.style.top = '-50px';
+                pill.style.width = (20 + Math.random() * 20) + 'px';
+                pill.style.height = (10 + Math.random() * 10) + 'px';
+                pill.style.background = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.3)`;
+                pill.style.borderRadius = '50px';
+                pill.style.animation = `float ${4 + Math.random() * 4}s ease-in-out infinite`;
+                
+                document.querySelector('.floating-elements').appendChild(pill);
+                
+                setTimeout(() => pill.remove(), 8000);
+            }
+        }, 3000);
+        
+        // Secret midnight mode
+        const now = new Date();
+        if (now.getHours() >= 23 || now.getHours() <= 3) {
+            if (!secrets.unlocked.has('midnight_mode')) {
+                secrets.found++;
+                secrets.unlocked.add('midnight_mode');
+                updateSecretCounter();
+                showEasterEgg("🌙 Midnight Mode Activated! You're taking this quiz at the perfect ADHD hour!");
+                document.body.style.filter = 'hue-rotate(45deg)';
+            }
+        }
+        
+        // Perfect score easter egg
+        window.checkPerfectScore = () => {
+            const maxScore = Math.max(...Object.values(scores));
+            const perfectHouses = Object.entries(scores).filter(([house, score]) => score === maxScore);
+            
+            if (perfectHouses.length === 1 && maxScore >= questions.length * 2) {
+                if (!secrets.unlocked.has('perfect_score')) {
+                    secrets.found++;
+                    secrets.unlocked.add('perfect_score');
+                    updateSecretCounter();
+                    showAchievement("🎯 Perfect Score Achievement Unlocked! You're the ultimate " + perfectHouses[0][0] + "!");
+                }
+            }
+        };
+        
+        // Chaos level monitoring
+        setInterval(() => {
+            const chaos = parseInt(document.getElementById('chaosLevel').textContent);
+            if (chaos === 100 && !secrets.unlocked.has('maximum_chaos')) {
+                secrets.found++;
+                secrets.unlocked.add('maximum_chaos');
+                updateSecretCounter();
+                showAchievement("💥 MAXIMUM CHAOS ACHIEVED!");
+                activateMatrixMode();
+            }
+        }, 1000);
+        
+        // Browser tab title easter eggs
+        let titleMessages = [
+            "Sorting Hat for Mental Chaos™",
+            "Are you still there?",
+            "Your ADHD is showing...",
+            "Tab #127 of today",
+            "Don't forget about me!",
+            "Still procrastinating?",
+            "The chaos awaits...",
+            "Your dopamine dealer"
+        ];
+        
+        let titleIndex = 0;
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                document.title = titleMessages[Math.floor(Math.random() * titleMessages.length)];
+            } else {
+                document.title = "Sorting Hat for Mental Chaos™";
+                if (!secrets.unlocked.has('tab_switcher')) {
+                    secrets.found++;
+                    secrets.unlocked.add('tab_switcher');
+                    updateSecretCounter();
+                    showEasterEgg("👀 You switched tabs! Classic ADHD move. The hat understands your struggle.");
+                }
+            }
+        });
+        
+        // Mobile device detection easter egg
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            if (!secrets.unlocked.has('mobile_user')) {
+                setTimeout(() => {
+                    secrets.found++;
+                    secrets.unlocked.add('mobile_user');
+                    updateSecretCounter();
+                    showEasterEgg("📱 Mobile ADHD warrior detected! Taking quizzes on the go, we respect the hustle!");
+                }, 2000);
+            }
+        }
+        
+        // Scroll behavior easter egg
+        let scrollCount = 0;
+        window.addEventListener('scroll', () => {
+            scrollCount++;
+            if (scrollCount === 20 && !secrets.unlocked.has('scroll_master')) {
+                secrets.found++;
+                secrets.unlocked.add('scroll_master');
+                updateSecretCounter();
+                showEasterEgg("📜 Scroll Master Achievement! Your restless energy is palpable.");
+            }
+        });
+        
+        // Double-click easter eggs
+        document.addEventListener('dblclick', (e) => {
+            if (e.target.closest('.sparkle')) {
+                if (!secrets.unlocked.has('sparkle_hunter')) {
+                    secrets.found++;
+                    secrets.unlocked.add('sparkle_hunter');
+                    updateSecretCounter();
+                    showEasterEgg("✨ Sparkle Hunter Achievement! You found the secret sparkle click!");
+                    
+                    // Create extra sparkles
+                    for (let i = 0; i < 20; i++) {
+                        setTimeout(() => {
+                            const sparkle = document.createElement('div');
+                            sparkle.className = 'sparkle';
+                            sparkle.style.left = e.clientX + (Math.random() - 0.5) * 200 + 'px';
+                            sparkle.style.top = e.clientY + (Math.random() - 0.5) * 200 + 'px';
+                            sparkle.style.position = 'fixed';
+                            sparkle.style.background = '#ffd700';
+                            document.body.appendChild(sparkle);
+                            
+                            setTimeout(() => sparkle.remove(), 2000);
+                        }, i * 50);
+                    }
+                }
+            }
+        });
+        
+        // Final achievement for finding all secrets
+        function checkAllSecrets() {
+            if (secrets.found >= secrets.total && !secrets.unlocked.has('master_explorer')) {
+                secrets.unlocked.add('master_explorer');
+                showAchievement("🏆 MASTER EXPLORER! You found all easter eggs! You are the chosen one of ADHD chaos!");
+                
+                // Epic celebration
+                document.body.style.animation = 'rainbow 2s infinite';
+                setTimeout(() => {
+                    document.body.style.animation = '';
+                }, 10000);
+            }
+        }
+        
+        // Add rainbow animation to CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes rainbow {
+                0% { filter: hue-rotate(0deg); }
+                100% { filter: hue-rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Check for secrets periodically
+        setInterval(checkAllSecrets, 1000);
+        
+        // Special date easter eggs
+        const today = new Date();
+        const month = today.getMonth();
+        const day = today.getDate();
+        
+        // Halloween
+        if (month === 9 && day === 31) {
+            if (!secrets.unlocked.has('halloween')) {
+                secrets.found++;
+                secrets.unlocked.add('halloween');
+                updateSecretCounter();
+                showEasterEgg("🎃 Halloween Special! The sorting hat is extra spooky today!");
+                document.body.style.filter = 'sepia(0.5) contrast(1.2)';
+            }
+        }
+        
+        // New Year's Day
+        if (month === 0 && day === 1) {
+            if (!secrets.unlocked.has('new_year')) {
+                secrets.found++;
+                secrets.unlocked.add('new_year');
+                updateSecretCounter();
+                showEasterEgg("🎊 Happy New Year! Starting the year with some mental chaos, we love it!");
+            }
+        }
+        
+        // April Fool's Day
+        if (month === 3 && day === 1) {
+            if (!secrets.unlocked.has('april_fools')) {
+                secrets.found++;
+                secrets.unlocked.add('april_fools');
+                updateSecretCounter();
+                showEasterEgg("🤪 April Fool's Day! But your ADHD isn't a joke - it's a superpower!");
+                
+                // Temporary chaos mode
+                setTimeout(() => {
+                    document.body.style.transform = 'rotate(1deg)';
+                    setTimeout(() => {
+                        document.body.style.transform = '';
+                    }, 5000);
+                }, 1000);
+            }
+        }
+        
+        // Browser-specific easter eggs
+        const userAgent = navigator.userAgent;
+        if (userAgent.includes('Chrome') && !userAgent.includes('Edg')) {
+            setTimeout(() => {
+                if (!secrets.unlocked.has('chrome_user')) {
+                    secrets.found++;
+                    secrets.unlocked.add('chrome_user');
+                    updateSecretCounter();
+                    showEasterEgg("🌐 Chrome user detected! We see you with your 127 tabs open. One of us! One of us!");
+                }
+            }, 3000);
+        }
+        
+        // Final polish: random encouraging messages
+        const encouragements = [
+            "Your brain is beautiful, chaotic, and perfect.",
+            "ADHD isn't a bug, it's a feature.",
+            "You're not broken, you're just running on a different OS.",
+            "Neurospicy and proud!",
+            "Your hyperfocus is a superpower.",
+            "Embrace the beautiful chaos.",
+            "You think differently, and that's your strength."
+        ];
+        
+        function showRandomEncouragement() {
+            if (Math.random() < 0.1) { // 10% chance
+                const message = encouragements[Math.floor(Math.random() * encouragements.length)];
+                showAchievement("💝 " + message);
+            }
+        }
+        
+        // Show encouragement randomly during quiz
+        setInterval(showRandomEncouragement, 15000);
+        
+        // Final initialization
+        updateDebugInfo();
+        
+        // Add final secret: taking the quiz multiple times
+        let quizCompletions = 0;
+        window.addEventListener('beforeunload', () => {
+            if (currentQuestion >= questions.length) {
+                quizCompletions++;
+                if (quizCompletions >= 3 && !secrets.unlocked.has('quiz_addict')) {
+                    secrets.found++;
+                    secrets.unlocked.add('quiz_addict');
+                    showAchievement("🔄 Quiz Addict Achievement! You can't stop, won't stop!");
+                }
+            }
+        });
+    </script>
+</body>
+</html>
