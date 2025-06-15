@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>The Sorting Hat for Mental Chaos™ - Certified Neurodivergent</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Creepster&family=Montserrat:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap');
@@ -11,17 +11,20 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
         
         body {
-            background: linear-gradient(45deg, #1a0033, #330066, #0d1b2a, #2d1b4e, #1a0033);
+            background: linear-gradient(45deg, #0f001a, #1a0033, #0a1420, #1a1030, #0f001a);
             background-size: 400% 400%;
             animation: gradientShift 12s ease infinite;
             font-family: 'Montserrat', sans-serif;
             color: #e0e0e0;
             min-height: 100vh;
             overflow-x: hidden;
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="%23ff6b9d" opacity="0.3"/><circle cx="10" cy="10" r="3" fill="%23ff6b9d"/></svg>'), auto;
+            position: relative;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
         
         @keyframes gradientShift {
@@ -35,7 +38,7 @@
         .container {
             max-width: 900px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 15px;
             position: relative;
             z-index: 2;
         }
@@ -48,6 +51,7 @@
             height: 100%;
             pointer-events: none;
             z-index: 1;
+            overflow: hidden;
         }
         
         .floating-pill {
@@ -74,50 +78,55 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.95);
             color: #00ff00;
             font-family: 'Fira Code', monospace;
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 15px;
             border: 2px solid #00ff00;
             display: none;
             z-index: 9999;
             text-align: center;
+            max-width: 90vw;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
         }
         
         .header {
             text-align: center;
-            margin-bottom: 40px;
-            padding: 30px;
-            background: rgba(0, 0, 0, 0.4);
+            margin-bottom: 30px;
+            padding: 25px;
+            background: rgba(0, 0, 0, 0.85);
             border-radius: 20px;
-            border: 2px solid #ff6b9d;
-            box-shadow: 0 0 30px rgba(255, 107, 157, 0.3);
+            border: 2px solid #cc4a7a;
+            box-shadow: 0 0 25px rgba(204, 74, 122, 0.2);
             position: relative;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
         
         .header::before {
             content: '';
             position: absolute;
-            top: -5px;
-            left: -5px;
-            right: -5px;
-            bottom: -5px;
-            background: linear-gradient(45deg, #ff6b9d, #4ecdc4, #45b7d1, #96ceb4, #ffa726, #ff6b9d);
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(45deg, #cc4a7a, #3bb3a8, #3590c4, #7da89a, #d18a1f, #cc4a7a);
             background-size: 400% 400%;
-            border-radius: 25px;
+            border-radius: 23px;
             z-index: -1;
             animation: gradientShift 3s ease infinite;
         }
         
         .title {
             font-family: 'Creepster', cursive;
-            font-size: 3.5em;
-            color: #ff6b9d;
-            text-shadow: 0 0 20px #ff6b9d, 0 0 40px #ff6b9d;
-            margin-bottom: 10px;
+            font-size: clamp(2em, 8vw, 3.5em);
+            color: #cc4a7a;
+            text-shadow: 0 0 15px #cc4a7a, 0 0 25px #cc4a7a;
+            margin-bottom: 15px;
             animation: flicker 3s infinite;
             position: relative;
+            line-height: 1.2;
         }
         
         .title::after {
@@ -125,56 +134,61 @@
             font-size: 0.3em;
             position: absolute;
             top: 0;
-            right: -20px;
+            right: -10px;
             animation: pulse 2s infinite;
         }
         
         @keyframes flicker {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
+            50% { opacity: 0.9; }
             60% { opacity: 1; }
-            62% { opacity: 0.9; }
+            62% { opacity: 0.95; }
             98% { opacity: 1; }
-            99% { opacity: 0.7; }
+            99% { opacity: 0.8; }
         }
         
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
+            50% { transform: scale(1.1); }
         }
         
         .subtitle {
-            font-size: 1.2em;
-            color: #b8b8ff;
+            font-size: clamp(0.9em, 4vw, 1.2em);
+            color: #a8a8e0;
             font-style: italic;
             margin-bottom: 20px;
+            line-height: 1.3;
         }
         
         .intro-text {
-            font-size: 1em;
+            font-size: clamp(0.85em, 3.5vw, 1em);
             line-height: 1.6;
-            color: #d0d0d0;
-            max-width: 600px;
+            color: #e0e0e0;
             margin: 0 auto 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
         
         .disclaimer {
-            font-size: 0.8em;
-            color: #999;
+            font-size: clamp(0.75em, 3vw, 0.8em);
+            color: #cccccc;
             font-style: italic;
             margin-top: 15px;
-            opacity: 0.7;
+            opacity: 0.9;
+            line-height: 1.4;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
         
         .quiz-container {
-            background: rgba(0, 0, 0, 0.6);
-            border-radius: 15px;
-            padding: 30px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 20px;
+            padding: 25px;
             margin-bottom: 30px;
             border: 1px solid #4a4a4a;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             position: relative;
             overflow: hidden;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
         }
         
         .quiz-container::before {
@@ -205,23 +219,26 @@
         }
         
         .question-text {
-            font-size: 1.3em;
+            font-size: clamp(1.1em, 4.5vw, 1.3em);
             color: #ff9f43;
             margin-bottom: 20px;
             font-weight: 600;
             position: relative;
+            line-height: 1.4;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
         
         .question-number {
             position: absolute;
             top: -10px;
             right: 0;
-            background: #ff6b9d;
+            background: #cc4a7a;
             color: white;
-            padding: 5px 10px;
+            padding: 8px 12px;
             border-radius: 15px;
             font-size: 0.7em;
             font-weight: bold;
+            text-shadow: none;
         }
         
         .options {
@@ -232,14 +249,21 @@
         .option {
             background: linear-gradient(135deg, #2c3e50, #34495e);
             border: 2px solid #555;
-            border-radius: 10px;
-            padding: 15px 20px;
+            border-radius: 15px;
+            padding: 18px 20px;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 1em;
+            font-size: clamp(0.9em, 3.5vw, 1em);
             color: #ecf0f1;
             position: relative;
             overflow: hidden;
+            line-height: 1.5;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
         }
         
         .option::before {
@@ -253,44 +277,48 @@
             transition: left 0.5s ease;
         }
         
-        .option:hover::before {
+        .option:hover::before,
+        .option:active::before {
             left: 100%;
         }
         
-        .option:hover {
-            background: linear-gradient(135deg, #3d5a80, #98c1d9);
-            border-color: #ff6b9d;
+        .option:hover,
+        .option:active {
+            background: linear-gradient(135deg, #335066, #7aa5c4);
+            border-color: #cc4a7a;
             transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.3);
+            box-shadow: 0 8px 25px rgba(204, 74, 122, 0.3);
         }
         
         .option.selected {
-            background: linear-gradient(135deg, #ff6b9d, #c44569);
-            border-color: #ff6b9d;
+            background: linear-gradient(135deg, #cc4a7a, #a63857);
+            border-color: #cc4a7a;
             color: white;
             transform: scale(1.02);
-            box-shadow: 0 0 20px rgba(255, 107, 157, 0.5);
+            box-shadow: 0 0 25px rgba(204, 74, 122, 0.5);
         }
         
         .option.selected::after {
             content: '✓';
             position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 1.2em;
+            top: 15px;
+            right: 20px;
+            font-size: 1.4em;
             font-weight: bold;
         }
         
         .result-container {
-            background: rgba(0, 0, 0, 0.8);
-            border-radius: 20px;
-            padding: 40px;
+            background: rgba(0, 0, 0, 0.9);
+            border-radius: 25px;
+            padding: 30px;
             text-align: center;
             border: 3px solid;
             box-shadow: 0 0 40px;
             display: none;
             position: relative;
             overflow: hidden;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
         }
         
         .result-container::before {
@@ -335,10 +363,11 @@
         
         .house-name {
             font-family: 'Creepster', cursive;
-            font-size: 3em;
+            font-size: clamp(2em, 8vw, 3em);
             margin-bottom: 20px;
             text-shadow: 0 0 15px currentColor;
             animation: glow 2s ease-in-out infinite alternate;
+            line-height: 1.2;
         }
         
         @keyframes glow {
@@ -347,42 +376,48 @@
         }
         
         .house-description {
-            font-size: 1.2em;
+            font-size: clamp(1em, 4vw, 1.2em);
             line-height: 1.6;
             margin-bottom: 30px;
             color: #e0e0e0;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
         
         .house-motto {
             font-style: italic;
-            font-size: 1.1em;
+            font-size: clamp(0.95em, 4vw, 1.1em);
             opacity: 0.9;
             margin-bottom: 20px;
             color: #d0d0d0;
+            line-height: 1.4;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
         
         .house-stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
             margin: 30px 0;
         }
         
         .stat-item {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.15);
             padding: 15px;
-            border-radius: 10px;
+            border-radius: 15px;
             border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
         
         .stat-label {
-            font-size: 0.9em;
-            opacity: 0.8;
-            margin-bottom: 5px;
+            font-size: clamp(0.8em, 3.5vw, 0.9em);
+            opacity: 0.9;
+            margin-bottom: 8px;
+            color: #e0e0e0;
         }
         
         .stat-value {
-            font-size: 1.2em;
+            font-size: clamp(1em, 4vw, 1.2em);
             font-weight: bold;
             color: currentColor;
         }
@@ -393,14 +428,19 @@
             border-radius: 25px;
             color: white;
             cursor: pointer;
-            font-size: 1.1em;
+            font-size: clamp(0.95em, 4vw, 1.1em);
             font-weight: 600;
-            padding: 15px 30px;
+            padding: 15px 25px;
             transition: all 0.3s ease;
-            margin: 10px;
+            margin: 8px;
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
             position: relative;
             overflow: hidden;
+            min-height: 50px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
         }
         
         .btn::before {
@@ -414,11 +454,13 @@
             transition: left 0.5s ease;
         }
         
-        .btn:hover::before {
+        .btn:hover::before,
+        .btn:active::before {
             left: 100%;
         }
         
-        .btn:hover {
+        .btn:hover,
+        .btn:active {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
         }
@@ -429,9 +471,9 @@
         
         .progress-bar {
             width: 100%;
-            height: 8px;
+            height: 10px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
+            border-radius: 5px;
             margin: 20px 0;
             overflow: hidden;
             position: relative;
@@ -439,8 +481,8 @@
         
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #ff6b9d, #4ecdc4, #45b7d1);
-            border-radius: 4px;
+            background: linear-gradient(90deg, #cc4a7a, #3bb3a8, #3590c4);
+            border-radius: 5px;
             transition: width 0.5s ease;
             width: 0%;
             position: relative;
@@ -464,25 +506,29 @@
         
         .chaos-meter {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 15px;
-            border-radius: 10px;
-            border: 2px solid #ff6b9d;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 12px;
+            border-radius: 15px;
+            border: 2px solid #cc4a7a;
             z-index: 10;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
         
         .chaos-level {
-            color: #ff6b9d;
+            color: #cc4a7a;
             font-weight: bold;
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            font-size: clamp(0.75em, 3vw, 0.85em);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
         
         .chaos-bar {
-            width: 100px;
+            width: 80px;
             height: 8px;
             background: rgba(255, 255, 255, 0.2);
             border-radius: 4px;
@@ -491,7 +537,7 @@
         
         .chaos-fill {
             height: 100%;
-            background: linear-gradient(90deg, #4ecdc4, #ffa726, #ff6b9d);
+            background: linear-gradient(90deg, #3bb3a8, #d18a1f, #cc4a7a);
             border-radius: 4px;
             transition: width 0.3s ease;
             width: 0%;
@@ -499,15 +545,18 @@
         
         .secret-counter {
             position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 10px;
-            border-radius: 5px;
+            bottom: 15px;
+            left: 15px;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 10px 15px;
+            border-radius: 10px;
             font-family: 'Fira Code', monospace;
-            font-size: 0.8em;
+            font-size: clamp(0.7em, 3vw, 0.8em);
             color: #00ff00;
             display: none;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid #00ff00;
         }
         
         .easter-egg-notification {
@@ -515,15 +564,17 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.95);
             color: #ffd700;
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 15px;
             border: 2px solid #ffd700;
             text-align: center;
             z-index: 9999;
             display: none;
             animation: bounceIn 0.5s ease;
+            max-width: 85vw;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
         }
         
         @keyframes bounceIn {
@@ -533,8 +584,8 @@
         }
         
         .hat-animation {
-            width: 100px;
-            height: 100px;
+            width: 80px;
+            height: 80px;
             margin: 0 auto 20px;
             background: #4a4a4a;
             border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
@@ -560,10 +611,10 @@
         .hat-animation::before {
             content: '';
             position: absolute;
-            top: -20px;
+            top: -16px;
             left: 30%;
             width: 40%;
-            height: 40px;
+            height: 32px;
             background: #4a4a4a;
             border-radius: 50px;
         }
@@ -574,7 +625,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 1.5em;
+            font-size: 1.2em;
             animation: blink 3s infinite;
         }
         
@@ -585,17 +636,19 @@
         
         .hat-speech {
             position: absolute;
-            top: -60px;
+            top: -70px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.95);
             color: #ffd700;
             padding: 10px 15px;
             border-radius: 10px;
-            font-size: 0.9em;
+            font-size: clamp(0.8em, 3.5vw, 0.9em);
             white-space: nowrap;
             border: 2px solid #ffd700;
             display: none;
+            max-width: 250px;
+            text-align: center;
         }
         
         .hat-speech::after {
@@ -604,7 +657,7 @@
             top: 100%;
             left: 50%;
             transform: translateX(-50%);
-            border: 10px solid transparent;
+            border: 8px solid transparent;
             border-top-color: #ffd700;
         }
         
@@ -632,48 +685,39 @@
         
         .hidden { display: none !important; }
         
-        @media (max-width: 768px) {
-            .title { font-size: 2.5em; }
-            .container { padding: 15px; }
-            .chaos-meter { 
-                position: relative; 
-                top: auto; 
-                right: auto; 
-                margin-bottom: 20px; 
-                width: 100%;
-            }
-            .house-stats {
-                grid-template-columns: 1fr;
-            }
-        }
-        
         .debug-mode {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 15px;
+            right: 15px;
             background: rgba(0, 0, 0, 0.9);
             color: #00ff00;
             padding: 10px;
-            border-radius: 5px;
+            border-radius: 8px;
             font-family: 'Fira Code', monospace;
-            font-size: 0.8em;
+            font-size: clamp(0.7em, 3vw, 0.8em);
             display: none;
             z-index: 1000;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid #00ff00;
         }
         
         .achievement-toast {
             position: fixed;
-            top: 20px;
+            top: 60px;
             left: 50%;
             transform: translateX(-50%);
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             padding: 15px 25px;
-            border-radius: 10px;
+            border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             z-index: 9999;
             display: none;
             animation: slideDown 0.5s ease;
+            max-width: 85vw;
+            text-align: center;
+            font-size: clamp(0.85em, 3.5vw, 0.95em);
         }
         
         @keyframes slideDown {
@@ -701,13 +745,194 @@
             position: absolute;
             top: -100%;
             font-family: 'Fira Code', monospace;
-            font-size: 14px;
+            font-size: 12px;
             color: #00ff00;
             animation: matrixFall 3s linear infinite;
         }
         
         @keyframes matrixFall {
             to { top: 100%; }
+        }
+        
+        /* Mobile-specific optimizations */
+        @media (max-width: 768px) {
+            .container { 
+                padding: 10px; 
+            }
+            
+            .header {
+                padding: 20px 15px;
+                margin-bottom: 25px;
+            }
+            
+            .quiz-container {
+                padding: 20px 15px;
+                border-radius: 15px;
+            }
+            
+            .chaos-meter { 
+                position: relative; 
+                top: auto; 
+                right: auto; 
+                margin-bottom: 15px; 
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 15px;
+            }
+            
+            .chaos-bar {
+                width: 120px;
+                margin-left: 15px;
+            }
+            
+            .house-stats {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .stat-item {
+                padding: 12px;
+            }
+            
+            .options {
+                gap: 12px;
+            }
+            
+            .option {
+                padding: 15px;
+                min-height: 50px;
+            }
+            
+            .btn {
+                width: 100%;
+                margin: 5px 0;
+                padding: 18px 20px;
+            }
+            
+            .result-container {
+                padding: 25px 20px;
+            }
+            
+            .hat-speech {
+                white-space: normal;
+                max-width: 200px;
+                line-height: 1.3;
+            }
+            
+            .secret-counter {
+                bottom: 60px;
+                left: 10px;
+            }
+            
+            .debug-mode {
+                bottom: 60px;
+                right: 10px;
+            }
+            
+            .easter-egg-notification,
+            .konami-code {
+                max-width: 95vw;
+                padding: 15px;
+            }
+            
+            .achievement-toast {
+                max-width: 95vw;
+                top: 10px;
+                padding: 12px 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .title::after {
+                right: -5px;
+            }
+            
+            .question-number {
+                position: static;
+                display: inline-block;
+                margin-bottom: 10px;
+            }
+            
+            .hat-animation {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .hat-animation::before {
+                top: -12px;
+                height: 24px;
+            }
+            
+            .floating-pill {
+                display: none; /* Hide on very small screens for performance */
+            }
+        }
+        
+        /* Landscape mobile optimization */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .header {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+            
+            .title {
+                font-size: 2em;
+                margin-bottom: 10px;
+            }
+            
+            .subtitle {
+                font-size: 0.9em;
+                margin-bottom: 10px;
+            }
+            
+            .intro-text, .disclaimer {
+                font-size: 0.8em;
+                margin-bottom: 10px;
+            }
+            
+            .quiz-container {
+                padding: 15px;
+            }
+            
+            .hat-animation {
+                width: 50px;
+                height: 50px;
+                margin-bottom: 15px;
+            }
+        }
+        
+        /* High DPI displays */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            body {
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+        }
+        
+        /* Accessibility improvements */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            .floating-pill {
+                display: none;
+            }
+            
+            .sparkle {
+                display: none;
+            }
+        }
+        
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            .intro-text, .disclaimer {
+                color: #f0f0f0;
+            }
         }
     </style>
 </head>
@@ -994,6 +1219,35 @@
         let scores = { slackerin: 0, overthinkledore: 0, cryffindor: 0, naptuffpuff: 0 };
         let selectedAnswer = null;
         
+        // Mobile-specific optimizations
+        function isMobile() {
+            return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+        
+        function isLandscape() {
+            return window.innerHeight < window.innerWidth && window.innerHeight < 500;
+        }
+        
+        // Touch event optimizations for mobile
+        function addTouchOptimizations() {
+            if (isMobile()) {
+                // Add touch-friendly styles
+                document.body.style.touchAction = 'manipulation';
+                
+                // Optimize button interactions for touch
+                const buttons = document.querySelectorAll('.btn, .option');
+                buttons.forEach(btn => {
+                    btn.addEventListener('touchstart', function() {
+                        this.style.transform = 'scale(0.98)';
+                    }, { passive: true });
+                    
+                    btn.addEventListener('touchend', function() {
+                        this.style.transform = '';
+                    }, { passive: true });
+                });
+            }
+        }
+        
         // Easter Egg Functions
         function updateSecretCounter() {
             document.getElementById('secretCount').textContent = secrets.found;
@@ -1006,18 +1260,24 @@
         }
         
         function showEasterEgg(message) {
+            const notification = document.getElementById('easterEggNotification');
             document.getElementById('easterEggText').textContent = message;
-            document.getElementById('easterEggNotification').style.display = 'block';
-            setTimeout(() => {
-                document.getElementById('easterEggNotification').style.display = 'none';
-            }, 3000);
+            notification.style.display = 'block';
+            
+            // Auto-hide on mobile after 4 seconds
+            if (isMobile()) {
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 4000);
+            }
         }
         
         function showAchievement(text) {
+            const toast = document.getElementById('achievementToast');
             document.getElementById('achievementText').textContent = text;
-            document.getElementById('achievementToast').style.display = 'block';
+            toast.style.display = 'block';
             setTimeout(() => {
-                document.getElementById('achievementToast').style.display = 'none';
+                toast.style.display = 'none';
             }, 4000);
         }
         
@@ -1025,7 +1285,10 @@
             const matrix = document.getElementById('matrixRain');
             matrix.classList.add('active');
             
-            for (let i = 0; i < 20; i++) {
+            // Reduce particles on mobile for performance
+            const particleCount = isMobile() ? 10 : 20;
+            
+            for (let i = 0; i < particleCount; i++) {
                 setTimeout(() => {
                     const column = document.createElement('div');
                     column.className = 'matrix-column';
@@ -1175,7 +1438,10 @@
             const sparklesContainer = document.getElementById('sparkles');
             sparklesContainer.innerHTML = '';
             
-            for (let i = 0; i < 30; i++) {
+            // Reduce sparkles on mobile for performance
+            const sparkleCount = isMobile() ? 15 : 30;
+            
+            for (let i = 0; i < sparkleCount; i++) {
                 const sparkle = document.createElement('div');
                 sparkle.className = 'sparkle';
                 sparkle.style.left = Math.random() * 100 + '%';
@@ -1209,7 +1475,7 @@
                 </div>
             `;
             
-            // Add click handlers
+            // Add click handlers with touch optimization
             document.querySelectorAll('.option').forEach(option => {
                 option.addEventListener('click', () => {
                     document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
@@ -1217,12 +1483,20 @@
                     selectedAnswer = parseInt(option.dataset.index);
                     document.getElementById('nextBtn').classList.remove('hidden');
                     
+                    // Haptic feedback on mobile
+                    if (isMobile() && navigator.vibrate) {
+                        navigator.vibrate(50);
+                    }
+                    
                     // Random hat commentary
                     if (Math.random() < 0.3) {
                         setTimeout(hatSpeak, 500);
                     }
                 });
             });
+            
+            // Add touch optimizations
+            addTouchOptimizations();
             
             // Update progress
             const progress = ((currentQuestion + 1) / questions.length) * 100;
@@ -1291,6 +1565,11 @@
             
             resultContainer.style.display = 'block';
             
+            // Scroll to top on mobile
+            if (isMobile()) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            
             // Completion achievement
             if (!secrets.unlocked.has('completed')) {
                 secrets.found++;
@@ -1307,9 +1586,10 @@
                 showAchievement(`🏠 ${house.name} Achievement Unlocked!`);
             }
             
-            // Add celebration effects
+            // Add celebration effects (reduced on mobile)
             setTimeout(() => {
-                for (let i = 0; i < 100; i++) {
+                const particleCount = isMobile() ? 50 : 100;
+                for (let i = 0; i < particleCount; i++) {
                     createCelebrationParticle(house.color);
                 }
             }, 500);
@@ -1362,29 +1642,52 @@
         function restartQuiz() {
             document.getElementById('resultContainer').style.display = 'none';
             document.getElementById('quizContainer').style.display = 'block';
-            document.getElementById('startBtn').style.display = 'inline-block';
+            document.getElementById('startBtn').style.display = 'inline-flex';
             currentQuestion = 0;
             scores = { slackerin: 0, overthinkledore: 0, cryffindor: 0, naptuffpuff: 0 };
             selectedAnswer = null;
             document.getElementById('progressFill').style.width = '0%';
             updateChaosLevel();
             createSparkles();
+            
+            // Scroll to top on mobile
+            if (isMobile()) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         }
         
         function shareResult() {
             const winningHouse = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
             const text = `I just got sorted into ${houses[winningHouse].name} at the Sorting Hat for Mental Chaos! 🧙‍♀️ "${houses[winningHouse].motto}" - Try it yourself!`;
             
-            if (navigator.share) {
+            if (navigator.share && isMobile()) {
                 navigator.share({ 
                     title: 'Sorting Hat for Mental Chaos™',
                     text: text,
                     url: window.location.href
+                }).catch(() => {
+                    // Fallback to clipboard
+                    copyToClipboard(text);
                 });
             } else {
+                copyToClipboard(text);
+            }
+        }
+        
+        function copyToClipboard(text) {
+            if (navigator.clipboard) {
                 navigator.clipboard.writeText(text).then(() => {
                     showAchievement('📋 Result copied to clipboard! Share your beautiful chaos with the world!');
                 });
+            } else {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showAchievement('📋 Result copied! Share your beautiful chaos with the world!');
             }
         }
         
@@ -1411,12 +1714,31 @@
             updateDebugInfo();
         }, 1000);
         
+        // Orientation change handler for mobile
+        window.addEventListener('orientationchange', () => {
+            setTimeout(() => {
+                // Recalculate layout after orientation change
+                if (isMobile()) {
+                    createSparkles();
+                }
+            }, 500);
+        });
+        
+        // Resize handler
+        window.addEventListener('resize', () => {
+            if (isMobile()) {
+                createSparkles();
+            }
+        });
+        
         // Initialize
         createSparkles();
         updateChaosLevel();
         updateSecretCounter();
+        addTouchOptimizations();
         
-        // Add random chaos effects
+        // Add random chaos effects (reduced frequency on mobile)
+        const chaosInterval = isMobile() ? 5000 : 3000;
         setInterval(() => {
             if (Math.random() < 0.1) {
                 const pill = document.createElement('div');
@@ -1433,7 +1755,7 @@
                 
                 setTimeout(() => pill.remove(), 8000);
             }
-        }, 3000);
+        }, chaosInterval);
         
         // Secret midnight mode
         const now = new Date();
@@ -1486,7 +1808,6 @@
             "Your dopamine dealer"
         ];
         
-        let titleIndex = 0;
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
                 document.title = titleMessages[Math.floor(Math.random() * titleMessages.length)];
@@ -1502,7 +1823,7 @@
         });
         
         // Mobile device detection easter egg
-        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        if (isMobile()) {
             if (!secrets.unlocked.has('mobile_user')) {
                 setTimeout(() => {
                     secrets.found++;
@@ -1523,7 +1844,7 @@
                 updateSecretCounter();
                 showEasterEgg("📜 Scroll Master Achievement! Your restless energy is palpable.");
             }
-        });
+        }, { passive: true });
         
         // Double-click easter eggs
         document.addEventListener('dblclick', (e) => {
@@ -1672,6 +1993,37 @@
                 }
             }
         });
+        
+        // Prevent zoom on iOS double-tap
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+        
+        // Performance optimization for mobile
+        if (isMobile()) {
+            // Reduce motion for better performance
+            document.documentElement.style.setProperty('--animation-duration', '0.3s');
+            
+            // Optimize scroll behavior
+            document.body.style.webkitOverflowScrolling = 'touch';
+            
+            // Reduce particle effects on very small screens
+            if (window.innerWidth < 400) {
+                const reducedAnimations = document.createElement('style');
+                reducedAnimations.textContent = `
+                    .floating-pill { display: none !important; }
+                    .sparkle { display: none !important; }
+                    .matrix-column { display: none !important; }
+                `;
+                document.head.appendChild(reducedAnimations);
+            }
+        }
     </script>
 </body>
 </html>
+            
